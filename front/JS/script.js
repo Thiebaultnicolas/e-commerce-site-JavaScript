@@ -1,4 +1,4 @@
-// Récupération des product depuis le fichier JSON
+// Récupération des produits depuis le fichier JSON
 fetch ("http://localhost:3000/api/products")
 .then ((res) => res.json())
 .then((products) => displayProducts(products))
