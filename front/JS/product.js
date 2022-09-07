@@ -35,18 +35,67 @@ function displayProducts(produits) {
     const nodeDescription = document.querySelector("#description");
     nodeDescription.innerText=`${description}`
 
-    const Select = document.querySelector("#colors")
-   
     colors.forEach(color => {
         const nodeColors = document.createElement("option")
-        nodeColors.value=`${color}`
+        nodeColors.value=`${color}` // supp ``
         nodeColors.innerText=`${color}`
-        Select.appendChild(nodeColors)
+        select.appendChild(nodeColors)
     });
 
     sectionItem__img.appendChild(image)
-       
+      
 }
 
 
 
+
+const select = document.querySelector("#colors")
+const quantity = document.querySelector("#quantity")
+
+
+ //////////////////////////////// localStorage////////////////////////////////////////
+
+//Ajout dans le panier
+
+function addproduct () {
+    
+   
+    let basket = JSON.parse(localStorage.getItem("basket"));
+    if (basket === null) {
+        basket = [];
+    } 
+
+    let canapeFound;
+
+    for (let i = 0; i < basket.length; i ++) {
+        const element = basket[i];
+/*vérification si id du produit en cour  = egal a id de la page et si la couleur du produit en cour est égal a la couleur selectionnée*/
+      if (basket[i] .id == id && basket[i] .color == select.value){
+       canapeFound=basket[i]
+      break;
+      }   
+    }
+
+    if (canapeFound === undefined) {
+        basket.push ( {
+            id : id,
+            color: select.value,
+            quantity: quantity.value
+        })
+    } else {
+        canapeFound.quantity = parseInt (canapeFound.quantity) + parseInt(quantity.value)
+    }
+
+    localStorage.setItem("basket", JSON.stringify(basket))
+    
+}
+console.log(addproduct);
+console.log(JSON.parse(localStorage.getItem("basket")));
+
+// au click du bouton ajoute addproduct 
+addToCart.addEventListener("click", addproduct)
+
+
+// si tu trouve l'element qui correspond a la condition dans l'array basket alors  ajoute la quantity sinon push
+
+// supprimer objet du panier
