@@ -18,7 +18,7 @@ function displayProducts(produits) {
     console.log(sectionItem__img);
 
     const {_id, imageUrl, altTxt, name, description, colors ,price } = produits ;
-    console.log(_id, imageUrl, altTxt, name, description);
+    console.log(_id, imageUrl, altTxt, name, description,colors,price);
     console.log(produits);
 
     const image = document.createElement("img")
@@ -45,8 +45,6 @@ function displayProducts(produits) {
     sectionItem__img.appendChild(image)
       
 }
-
-
 
 
 const select = document.querySelector("#colors")
@@ -86,6 +84,7 @@ function addproduct () {
         canapeFound.quantity = parseInt (canapeFound.quantity) + parseInt(quantity.value)
     }
 
+  
     localStorage.setItem("basket", JSON.stringify(basket))
     
 }
@@ -96,6 +95,4 @@ console.log(JSON.parse(localStorage.getItem("basket")));
 addToCart.addEventListener("click", addproduct)
 
 
-// si tu trouve l'element qui correspond a la condition dans l'array basket alors  ajoute la quantity sinon push
 
-// supprimer objet du panier
