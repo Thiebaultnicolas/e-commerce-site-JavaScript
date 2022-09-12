@@ -15,7 +15,7 @@ function retrieveItemsFromCache () {
 }
 
 */
-
+/*
 fetch("http://localhost:3000/api/products")
 .then ((res) => res.json())
 .then((products) => displayBasketApi(products))
@@ -68,31 +68,79 @@ function displayBasketApi(produits) {
      
   })
 }
-
+*/
   
-  function displayBasketLocalStorage(itemLocalStorage) {
+ 
 
-// appeler local storage ici
-    const itemLocalStorage = localStorage.length
-    for (let i = 0; i < itemLocalStorage ;i++) {
-        const item = localStorage.getItem(localStorage.key(i))
-        const itemObject = JSON.parse(itemLocalStorage)
+// Récupération du localstorage et des items
+let itemBasket = JSON.parse(localStorage.getItem("basket"));
+console.log(itemBasket);
+
+    itemBasket.map((objetLocalStorage) =>  {
+        const idArticle = id
+        const colorArticle = color
+        const quantityArticle = quantity
+        ajoutItems()
+    })
+
+        function ajoutItems() {
+            fetch(`http://localhost:3000/api/products/${id}`)
+            .then ((res) => res.json())
+            .then((products) => displayProducts(products))
+            .catch((error) => {
+                console.error(error);
+            })
+
+            // Introduction des elements dans la section 
+            const section = document.querySelector("#cart__items");
+            console.log(section);
+
+            // Création de l'article
+            const article = document.createElement("article");
+            article.classList.add("cart__item");
+            article.dataset.id = `${idArticle}`;
+            article.dataset.color = `${colorArticle}`;
+            section.appendChild(article);
+
+            // Image du produit 
+            const divImage =  document.createElement("div");
+            divImage.classList.add("cart__item__img");
+            article.appendChild(divImage);
         
-    }
+            const image = document.createElement("img");
+            image.src = displayProducts.imageUrl;
+            image.alt = displayProducts.altTxt;
+            divImage.appendChild(image);
 
-    const quantity =  document.createElement("p")
-    //quantity.innerText = ?;
+            // Contenu du produit 
+            const divContent = document.createElement("div");
+            divContent.classList.add("cart__item__content");
+            article.appendChild(divContent);
 
-    const input =  document.createElement("input")
-    //input.innerText = ?;
+            const description = document.createElement("div");
+            description.classList.add("cart__item__content__description");
+            divContent.appendChild(description);
 
-    const div6 =  document.createElement("div")
-    div6.classList.add("cart__item__content__settings__delete")
+            const nameProduit = document.createElement("h2");
+            nameProduit.innerHTML = displayProducts.name;
+            description.appendChild(nameProduit);
 
-    const supprimer =  document.createElement("p")
-    //supprimer.innerText = ?;
+            let colorProduct = document.createElement("p");
+            colorProduct.innerHTML = colorArticle;
+            description.appendChild(colorProduct);
 
-}
+            
+            let priceProduct = document.createElement("p");
+            priceProduct.innerHTML = `${displayProducts.price}€`;
+            description.appendChild(priceProduct);
+
+            
+            let divSettings = document.createElement("div");
+            divSettings.classList.add("cart__item__content__settings");
+            divContent.appendChild(divSettings);
+                    
+
+        }
 
 
 
