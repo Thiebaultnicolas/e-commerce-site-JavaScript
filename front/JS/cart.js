@@ -1,178 +1,180 @@
-/*
-const cart = [];
-
-retrieveItemsFromCache () 
-console.log(cart)
-cart.forEach((item) => displayItem (item))
-
-function retrieveItemsFromCache () {
-    const numberOfItems = localStorage.length
-    for (let i = 0; i < numberOfItems ;i++) {
-        const item = localStorage.getItem(localStorage.key(i))
-        const itemObject = JSON.parse(item)
-        cart.push(itemObject)
-    }
-}
-
-*/
-/*
-fetch("http://localhost:3000/api/products")
-.then ((res) => res.json())
-.then((products) => displayBasketApi(products))
-.catch((error) => {
-    console.error(error);
-})
-
-function displayBasketApi(produits) {
-
-    const article = document.querySelector("#cart__items");
-    console.log(article);
-
-    produits.forEach((produit) => {
-
-        const {_id, imageUrl, altTxt, name, description, colors ,price } = produits ;
-        console.log(_id, imageUrl, altTxt, name, description,colors,price);
-  
-        const article = document.createElement("article")
-        article.classList.add("cart__item")
-        article.dataset.id = _id
-        article.dataset.color = colors
-
-        const div1 =  document.createElement("div")
-        div1.classList.add("cart__item__img")
-    
-        const image = document.createElement("img")
-        image.src = imageUrl
-        image.alt = altTxt
-
-        const div2 =  document.createElement("div")
-        div2.classList.add("cart__item__content")
-
-        const div3 =  document.createElement("div")
-        div3.classList.add("cart__item__content_description")
-
-        const nom =  document.createElement("h2")
-        nom.innerText = name
-
-        const color =  document.createElement("p")
-        color.innerText = description
-
-        const prix =  document.createElement("p")
-        prix.innerText = price
-
-        const div4 =  document.createElement("div")
-        div4.classList.add("cart__item__content__settings")
-    
-        const div5 =  document.createElement("div")
-        div5.classList.add("cart__item__content__settings__quantity")
-     
-  })
-}
-*/
-  
- 
 
 // Récupération du localstorage et des items
-let itemBasket = JSON.parse(localStorage.getItem("basket"));
-console.log(itemBasket);
+let lsProducts = JSON.parse(localStorage.getItem('basket'))
+// Récupérer toutes les données de l'API
+fetch(`http://localhost:3000/api/products/`)
+	.then(res => res.json())
+	.then(apiProducts => {
+		//produits provenant de l'api (products)
+		apiProducts.forEach(apiProduct => {
+			const lsProductFound = lsProducts.find(
+				lsProduct => apiProduct._id === lsProduct.id
+			)
 
-    itemBasket.map((objetLocalStorage) =>  {
-        const idArticle = id
-        const colorArticle = color
-        const quantityArticle = quantity
-        ajoutItems()
-    })
+			if (lsProductFound) {
+				display({
+					...apiProduct,
+					...lsProductFound,
+				})
+			}
+		})
+	})
+	.catch(error => console.error(error))
 
-        function ajoutItems() {
-            fetch(`http://localhost:3000/api/products/${id}`)
-            .then ((res) => res.json())
-            .then((products) => displayProducts(products))
-            .catch((error) => {
-                console.error(error);
-            })
+function display(product) {
+	console.log(product)
+	// Introduction des elements dans la section
+	const section = document.querySelector('#cart__items')
 
-            // Introduction des elements dans la section 
-            const section = document.querySelector("#cart__items");
-            console.log(section);
+	// Création de l'article
+	const article = document.createElement('article')
+	article.classList.add('cart__item')
+	article.dataset.id = `${product.id}`
+	article.dataset.color = `${product.color}`
+	section.appendChild(article)
 
-            // Création de l'article
-            const article = document.createElement("article");
-            article.classList.add("cart__item");
-            article.dataset.id = `${idArticle}`;
-            article.dataset.color = `${colorArticle}`;
-            section.appendChild(article);
+	// Image du produit
+	const divImage = document.createElement('div')
+	divImage.classList.add('cart__item__img')
+	article.appendChild(divImage)
 
-            // Image du produit 
-            const divImage =  document.createElement("div");
-            divImage.classList.add("cart__item__img");
-            article.appendChild(divImage);
-        
-            const image = document.createElement("img");
-            image.src = displayProducts.imageUrl;
-            image.alt = displayProducts.altTxt;
-            divImage.appendChild(image);
+	const image = document.createElement('img')
+	image.src = product.imageUrl
+	image.alt = product.altTxt
+	divImage.appendChild(image)
 
-            // Contenu du produit 
-            const divContent = document.createElement("div");
-            divContent.classList.add("cart__item__content");
-            article.appendChild(divContent);
+	// Contenu du produit
+	const divContent = document.createElement('div')
+	divContent.classList.add('cart__item__content')
+	article.appendChild(divContent)
 
-            const description = document.createElement("div");
-            description.classList.add("cart__item__content__description");
-            divContent.appendChild(description);
+	const description = document.createElement('div')
+	description.classList.add('cart__item__content__description')
+	divContent.appendChild(description)
 
-            const nameProduct = document.createElement("h2");
-            nameProduct.innerHTML = displayProducts.name;
-            description.appendChild(nameProduct);
+	const nameProduct = document.createElement('h2')
+	nameProduct.innerHTML = product.name
+	description.appendChild(nameProduct)
 
-            const colorProduct = document.createElement("p");
-            colorProduct.innerHTML = colorArticle;
-            description.appendChild(colorProduct);
+	const colorProduct = document.createElement('p')
+	colorProduct.innerHTML = product.color
+	description.appendChild(colorProduct)
 
-            
-            const priceProduct = document.createElement("p");
-            priceProduct.innerHTML = `${displayProducts.price}€`;
-            description.appendChild(priceProduct);
+	const priceProduct = document.createElement('p')
+	priceProduct.innerHTML = `${product.quantity * product.price} €`
+	description.appendChild(priceProduct)
 
-            
-            const divSettings = document.createElement("div");
-            divSettings.classList.add("cart__item__content__settings");
-            divContent.appendChild(divSettings);
+	const divSettings = document.createElement('div')
+	divSettings.classList.add('cart__item__content__settings')
+	divContent.appendChild(divSettings)
 
-            // quantité du produit
+	// quantité du produit
 
-            const divQuantity = document.createElement("div");
-            divQuantity.classList.add("cart__item__content__settings__quantity");
-            divSettings.appendChild(divQuantity);
+	const divQuantity = document.createElement('div')
+	divQuantity.classList.add('cart__item__content__settings__quantity')
+	divSettings.appendChild(divQuantity)
 
-            const quantity = document.createElement("p");
-            quantity.innerHTML = quantityArticle;
-            quantity.innerText = "Qté : ";
-            divQuantity.appendChild(quantity);
+	const quantity = document.createElement('p')
+	quantity.innerHTML = product.quantity
+	quantity.innerText = 'Qté : '
+	divQuantity.appendChild(quantity)
 
-            const input = document.createElement("input");
-            input.classList.add("itemQuantity");
-            input.type = "number";
-            input.name = 'itemQuantity';
-            input.min = 1;
-            input.max = 100;
-            input.value = quantityArticle;
-            divQuantity.appendChild(input);
+	const input = document.createElement('input')
+	input.classList.add('itemQuantity')
+	input.type = 'number'
+	input.name = 'itemQuantity'
+	input.min = 1
+	input.max = 100
+	input.value = product.quantity
+	divQuantity.appendChild(input)
 
-            // bouton supprimer du produit
-            
-            const divButtonSupp = document.createElement("div");
-            divButtonSupp.classList.add("cart__item__content__settings__delete");
-            divSettings.appendChild(divButtonSupp);
+	// bouton supprimer du produit
 
-            
-            const buttonSupp = document.createElement("p");
-            buttonSupp.classList.add("deleteItem");
-            buttonSupp.innerHTML = "Supprimer";
-            divButtonSupp.appendChild(buttonSupp);
+	const divButtonSupp = document.createElement('div')
+	divButtonSupp.classList.add('cart__item__content__settings__delete')
+	divSettings.appendChild(divButtonSupp)
 
-        }
+	const buttonSupp = document.createElement('p')
+	buttonSupp.classList.add('deleteItem')
+	buttonSupp.innerHTML = 'Supprimer'
+	divButtonSupp.appendChild(buttonSupp)
+}
 
+function ajoutItems() {
+	// Introduction des elements dans la section
+	const section = document.querySelector('#cart__items')
+	console.log(section)
 
+	// Création de l'article
+	const article = document.createElement('article')
+	article.classList.add('cart__item')
+	article.dataset.id = `${idArticle}`
+	article.dataset.color = `${colorArticle}`
+	section.appendChild(article)
 
+	// Image du produit
+	const divImage = document.createElement('div')
+	divImage.classList.add('cart__item__img')
+	article.appendChild(divImage)
 
+	const image = document.createElement('img')
+	image.src = product.imageUrl
+	image.alt = product.altTxt
+	divImage.appendChild(image)
+
+	// Contenu du produit
+	const divContent = document.createElement('div')
+	divContent.classList.add('cart__item__content')
+	article.appendChild(divContent)
+
+	const description = document.createElement('div')
+	description.classList.add('cart__item__content__description')
+	divContent.appendChild(description)
+
+	const nameProduct = document.createElement('h2')
+	nameProduct.innerHTML = product.name
+	description.appendChild(nameProduct)
+
+	const colorProduct = document.createElement('p')
+	colorProduct.innerHTML = colorArticle
+	description.appendChild(colorProduct)
+
+	const priceProduct = document.createElement('p')
+	priceProduct.innerHTML = `${product.price}€`
+	description.appendChild(priceProduct)
+
+	const divSettings = document.createElement('div')
+	divSettings.classList.add('cart__item__content__settings')
+	divContent.appendChild(divSettings)
+
+	// quantité du produit
+
+	const divQuantity = document.createElement('div')
+	divQuantity.classList.add('cart__item__content__settings__quantity')
+	divSettings.appendChild(divQuantity)
+
+	const quantity = document.createElement('p')
+	quantity.innerHTML = product.quantity
+	quantity.innerText = 'Qté : '
+	divQuantity.appendChild(quantity)
+
+	const input = document.createElement('input')
+	input.classList.add('itemQuantity')
+	input.type = 'number'
+	input.name = 'itemQuantity'
+	input.min = 1
+	input.max = 100
+	input.value = product.quantity
+	divQuantity.appendChild(input)
+
+	// bouton supprimer du produit
+
+	const divButtonSupp = document.createElement('div')
+	divButtonSupp.classList.add('cart__item__content__settings__delete')
+	divSettings.appendChild(divButtonSupp)
+
+	const buttonSupp = document.createElement('p')
+	buttonSupp.classList.add('deleteItem')
+	buttonSupp.innerHTML = 'Supprimer'
+	divButtonSupp.appendChild(buttonSupp)
+}
