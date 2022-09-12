@@ -159,7 +159,7 @@ console.log(itemBasket);
             input.value = quantityArticle;
             divQuantity.appendChild(input);
 
-            // bouton supprimer produit
+            // bouton supprimer du produit
             
             const divButtonSupp = document.createElement("div");
             divButtonSupp.classList.add("cart__item__content__settings__delete");
