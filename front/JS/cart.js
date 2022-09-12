@@ -121,9 +121,9 @@ console.log(itemBasket);
             description.classList.add("cart__item__content__description");
             divContent.appendChild(description);
 
-            const nameProduit = document.createElement("h2");
-            nameProduit.innerHTML = displayProducts.name;
-            description.appendChild(nameProduit);
+            const nameProduct = document.createElement("h2");
+            nameProduct.innerHTML = displayProducts.name;
+            description.appendChild(nameProduct);
 
             let colorProduct = document.createElement("p");
             colorProduct.innerHTML = colorArticle;
@@ -138,6 +138,12 @@ console.log(itemBasket);
             let divSettings = document.createElement("div");
             divSettings.classList.add("cart__item__content__settings");
             divContent.appendChild(divSettings);
+
+            // quantité du produit
+
+            let divQuantity = document.createElement("div");
+            divQuantity.classList.add("cart__item__content__settings__quantity");
+            divSettings.appendChild(divQuantity);
                     
 
         }
