@@ -125,26 +125,51 @@ console.log(itemBasket);
             nameProduct.innerHTML = displayProducts.name;
             description.appendChild(nameProduct);
 
-            let colorProduct = document.createElement("p");
+            const colorProduct = document.createElement("p");
             colorProduct.innerHTML = colorArticle;
             description.appendChild(colorProduct);
 
             
-            let priceProduct = document.createElement("p");
+            const priceProduct = document.createElement("p");
             priceProduct.innerHTML = `${displayProducts.price}€`;
             description.appendChild(priceProduct);
 
             
-            let divSettings = document.createElement("div");
+            const divSettings = document.createElement("div");
             divSettings.classList.add("cart__item__content__settings");
             divContent.appendChild(divSettings);
 
             // quantité du produit
 
-            let divQuantity = document.createElement("div");
+            const divQuantity = document.createElement("div");
             divQuantity.classList.add("cart__item__content__settings__quantity");
             divSettings.appendChild(divQuantity);
-                    
+
+            const quantity = document.createElement("p");
+            quantity.innerHTML = quantityArticle;
+            quantity.innerText = "Qté : ";
+            divQuantity.appendChild(quantity);
+
+            const input = document.createElement("input");
+            input.classList.add("itemQuantity");
+            input.type = "number";
+            input.name = 'itemQuantity';
+            input.min = 1;
+            input.max = 100;
+            input.value = quantityArticle;
+            divQuantity.appendChild(input);
+
+            // bouton supprimer produit
+            
+            const divButtonSupp = document.createElement("div");
+            divButtonSupp.classList.add("cart__item__content__settings__delete");
+            divSettings.appendChild(divButtonSupp);
+
+            
+            const buttonSupp = document.createElement("p");
+            buttonSupp.classList.add("deleteItem");
+            buttonSupp.innerHTML = "Supprimer";
+            divButtonSupp.appendChild(buttonSupp);
 
         }
 
