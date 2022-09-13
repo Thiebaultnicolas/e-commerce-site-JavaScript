@@ -24,9 +24,11 @@ fetch(`http://localhost:3000/api/products/`)
 function display(product) {
 	
 	// Introduction des elements dans la section
+
 	const section = document.querySelector('#cart__items')
 
 	// Création de l'article
+
 	const article = document.createElement('article')
 	article.classList.add('cart__item')
 	article.dataset.id = `${product.id}`
@@ -34,6 +36,7 @@ function display(product) {
 	section.appendChild(article)
 
 	// Image du produit
+
 	const divImage = document.createElement('div')
 	divImage.classList.add('cart__item__img')
 	article.appendChild(divImage)
@@ -44,6 +47,7 @@ function display(product) {
 	divImage.appendChild(image)
 
 	// Contenu du produit
+
 	const divContent = document.createElement('div')
 	divContent.classList.add('cart__item__content')
 	article.appendChild(divContent)
@@ -98,9 +102,18 @@ function display(product) {
 	buttonSupp.classList.add('deleteItem')
 	buttonSupp.innerHTML = 'Supprimer'
 	divButtonSupp.appendChild(buttonSupp)
-  
+/*
+    // quantité total + prix total
+
+	const totalQuantity = document.querySelector("#totalQuantity")
+	totalQuantity.innerHTML = product.quantity += product.quantity
+
+	const totalPrice = document.querySelector("#totalPrice")
+	totalPrice.innerHTML = product.price * product.quantity
+*/
 
 	// modification quantitée 
+
 	const changeQuantitee = document.querySelectorAll(".itemQuantity");
 	changeQuantitee.forEach(changement => {
 
@@ -113,13 +126,13 @@ function display(product) {
 					if(product.quantity >= 101){
 
 						product.quantity = 1
-						e.target.value = 1
+						p.target.value = 1
 					} 
 
 					if(product.quantity < 1 ){
 
 						product.quantity = 1
-						e.target.value = 1
+						p.target.value = 1
 					} 
 				
 					localStorage.setItem("basket", JSON.stringify(lsProducts));
@@ -133,6 +146,7 @@ function display(product) {
 
 
 	// Supprimer produit
+
     const bouttonSupp = document.querySelectorAll(".deleteItem");
     
 	bouttonSupp.forEach (btn => {
@@ -149,6 +163,7 @@ function display(product) {
 	})
 
 	// Mise a jour du panier 
+
     function refreshBasket(lsProducts) {
          if (lsProducts.length === 0) {
             localStorage.removeItem("basket");
@@ -170,10 +185,11 @@ function display(product) {
 		totalQuantity.textContent = result;
 	}
 
- 
+
 }
  
-    // Afficher quantité total d'objet dans le panier
+    // Afficher prix total du panier
+
 	function prixTotal() {
 					
 		let result = 0
@@ -183,6 +199,6 @@ function display(product) {
 		}
 		const shownPrice = document.querySelector("#totalPrice");
 		shownPrice.textContent = result;
-		console.log(product .price)
+		
 		} 
 
