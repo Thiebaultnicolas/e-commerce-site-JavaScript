@@ -37,7 +37,7 @@ function displayProducts(produits) {
 
     colors.forEach(color => {
         const nodeColors = document.createElement("option")
-        nodeColors.value=`${color}` // supp ``
+        nodeColors.value=`${color}` 
         nodeColors.innerText=`${color}`
         select.appendChild(nodeColors)
     });
