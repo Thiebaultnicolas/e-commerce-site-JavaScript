@@ -1,6 +1,6 @@
 // Récupération du localstorage et des items
 let lsProducts = JSON.parse(localStorage.getItem('basket'))
-const products = []
+let products = []
 // Récupérer toutes les données de l'API
 fetch(`http://localhost:3000/api/products/`)
 	.then(res => res.json())
@@ -127,7 +127,9 @@ function display(product) {
 	changeQuantitee.forEach(changement => {
 		changement.addEventListener('change', p => {
 			const getRootChange = p.target.closest('article')
-			for (const product of lsProducts) {
+			for (let i = 0; i < lsProducts.length; i++) {
+				const product = lsProducts[i]
+
 				if (
 					product.id == getRootChange.dataset.id &&
 					product.color == getRootChange.dataset.color
@@ -144,8 +146,10 @@ function display(product) {
 						p.target.value = 1
 					}
 
+					products[i].quantity = parseInt(product.quantity)
+
 					localStorage.setItem('basket', JSON.stringify(lsProducts))
-					quantityTotalbasket()
+					//quantityTotalbasket()
 					prixTotal()
 				}
 			}
@@ -162,9 +166,12 @@ function display(product) {
 			lsProducts = lsProducts.filter(
 				p => p.id !== test.dataset.id && p.color !== test.dataset.color
 			)
+			products = products.filter(
+				p => p.id !== test.dataset.id && p.color !== test.dataset.color
+			)
 			refreshBasket(lsProducts)
 			test.remove()
-			quantityTotalbasket()
+			//quantityTotalbasket()
 			prixTotal()
 		})
 	})
@@ -196,9 +203,8 @@ function display(product) {
 
 function prixTotal() {
 	let result = 0
+	console.log(products)
 	for (const product of products) {
-		console.log(product.price, product.quantity)
-
 		result += parseInt(product.price) * parseInt(product.quantity)
 	}
 	const shownPrice = document.querySelector('#totalPrice')
