@@ -1,28 +1,33 @@
-
 // Récupération du localstorage et des items
-let lsProducts = JSON.parse(localStorage.getItem('basket'))
+const lsProducts = JSON.parse(localStorage.getItem('basket'))
+const products = []
 // Récupérer toutes les données de l'API
 fetch(`http://localhost:3000/api/products/`)
 	.then(res => res.json())
 	.then(apiProducts => {
-		//produits provenant de l'api (products)
-		apiProducts.forEach(apiProduct => {
-			const lsProductFound = lsProducts.find(
-				lsProduct => apiProduct._id === lsProduct.id
+		//Fusion des données entre le localStorge et l'api
+		lsProducts.forEach(lsProduct => {
+			const productFound = apiProducts.find(
+				apiProduct => apiProduct._id === lsProduct.id
 			)
-
-			if (lsProductFound) {
-				display({
-					...apiProduct,
-					...lsProductFound,
+			if (productFound) {
+				products.push({
+					...productFound,
+					...lsProduct,
 				})
+				display(products.at(-1))
 			}
 		})
+
+		prixTotal()
 	})
 	.catch(error => console.error(error))
 
+/**
+ * @description : Affiche Les canapé dans le dom
+ * @param {object} product
+ */
 function display(product) {
-	
 	// Introduction des elements dans la section
 
 	const section = document.querySelector('#cart__items')
@@ -65,7 +70,11 @@ function display(product) {
 	description.appendChild(colorProduct)
 
 	const priceProduct = document.createElement('p')
-	priceProduct.innerHTML = `${product.price} €`
+	priceProduct.innerHTML = new Intl.NumberFormat('fr-FR', {
+		style: 'currency',
+		currency: 'EUR',
+	}).format(product.price)
+
 	description.appendChild(priceProduct)
 
 	const divSettings = document.createElement('div')
@@ -102,7 +111,7 @@ function display(product) {
 	buttonSupp.classList.add('deleteItem')
 	buttonSupp.innerHTML = 'Supprimer'
 	divButtonSupp.appendChild(buttonSupp)
-/*
+	/*
     // quantité total + prix total
 
 	const totalQuantity = document.querySelector("#totalQuantity")
@@ -112,96 +121,94 @@ function display(product) {
 	totalPrice.innerHTML = product.price * product.quantity
 */
 
-	// modification quantitée 
+	// modification quantitée
 
-	const changeQuantitee = document.querySelectorAll(".itemQuantity");
+	const changeQuantitee = document.querySelectorAll('.itemQuantity')
 	changeQuantitee.forEach(changement => {
-
-		changement.addEventListener("change", (p) => {
-			const getRootChange = p.target.closest("article");
+		changement.addEventListener('change', p => {
+			const getRootChange = p.target.closest('article')
 			for (const product of lsProducts) {
-				if (product._id == getRootChange.dataset.id && product.color == getRootChange.dataset.color) {
-					product.quantity = p.target.value;
-				
-					if(product.quantity >= 101){
+				if (
+					product.id == getRootChange.dataset.id &&
+					product.color == getRootChange.dataset.color
+				) {
+					product.quantity = p.target.value
 
+					if (product.quantity >= 101) {
 						product.quantity = 1
 						p.target.value = 1
-					} 
+					}
 
-					if(product.quantity < 1 ){
-
+					if (product.quantity < 1) {
 						product.quantity = 1
 						p.target.value = 1
-					} 
-				
-					localStorage.setItem("basket", JSON.stringify(lsProducts));
-					quantityTotalbasket();
-					prixTotal();
+					}
+
+					localStorage.setItem('basket', JSON.stringify(lsProducts))
+					quantityTotalbasket()
+					prixTotal()
 				}
 			}
 		})
-
-	})	
-
+	})
 
 	// Supprimer produit
 
-    const bouttonSupp = document.querySelectorAll(".deleteItem");
-    
-	bouttonSupp.forEach (btn => {
+	const bouttonSupp = document.querySelectorAll('.deleteItem')
 
-		btn.addEventListener("click" , (p) => {
-			const test = p.target.closest("article");
-			lsProducts = lsProducts.filter((p) => p._id !== test.dataset.id || p.color !== test.dataset.color );
-			refreshBasket(lsProducts);
+	bouttonSupp.forEach(btn => {
+		btn.addEventListener('click', p => {
+			const test = p.target.closest('article')
+			lsProducts = lsProducts.filter(
+				p => p.id !== test.dataset.id && p.color !== test.dataset.color
+			)
+			refreshBasket(lsProducts)
 			test.remove()
-			quantityTotalbasket();
+			quantityTotalbasket()
 			prixTotal()
-			
 		})
 	})
 
-	// Mise a jour du panier 
+	// Mise a jour du panier
 
-    function refreshBasket(lsProducts) {
-         if (lsProducts.length === 0) {
-            localStorage.removeItem("basket");
-        } else {
-            localStorage.setItem("basket", JSON.stringify(lsProducts));
-        }
-    }
-	
-
-    // Afficher quantité total d'objet dans le panier
-
-	quantityTotalbasket();
-	function quantityTotalbasket() {
-		let result = 0;
-		for (const product  of lsProducts) {
-			result += +product.quantity;
+	function refreshBasket(lsProducts) {
+		if (lsProducts.length === 0) {
+			localStorage.removeItem('basket')
+		} else {
+			localStorage.setItem('basket', JSON.stringify(lsProducts))
 		}
-		const totalQuantity = document.querySelector("#totalQuantity")
-		totalQuantity.textContent = result;
 	}
 
+	// Afficher quantité total d'objet dans le panier
 
-}
- 
-    // Afficher prix total du panier
-
-	function prixTotal() {
-					
+	quantityTotalbasket()
+	function quantityTotalbasket() {
 		let result = 0
 		for (const product of lsProducts) {
-		result += product.price * product.quantity
-								
+			result += +product.quantity
 		}
-		const shownPrice = document.querySelector("#totalPrice");
-		shownPrice.textContent = result;
-		
-		} 
+		const totalQuantity = document.querySelector('#totalQuantity')
+		totalQuantity.textContent = result
+	}
+}
 
+// Afficher prix total du panier
+
+function prixTotal() {
+	let result = 0
+	for (const product of products) {
+		console.log(product.price, product.quantity)
+
+		result += parseInt(product.price) * parseInt(product.quantity)
+	}
+	const shownPrice = document.querySelector('#totalPrice')
+	shownPrice.textContent = new Intl.NumberFormat('fr-FR', {
+		style: 'currency',
+		currency: 'EUR',
+	})
+		.format(result)
+		.slice(0, -2)
+}
 /*
  let prixTotalCalcul = [];
 
@@ -210,6 +217,3 @@ function display(product) {
  }
 
 */
-function test () {
-	
-}
