@@ -202,3 +202,11 @@ function display(product) {
 		
 		} 
 
+/*
+ let prixTotalCalcul = [];
+
+ for (let m = 0; m <lsProducts.length; m++ ) {
+	console.log(lsProducts[m].price);
+ }
+
+*/
