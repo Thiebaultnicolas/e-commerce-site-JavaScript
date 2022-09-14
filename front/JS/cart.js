@@ -1,5 +1,5 @@
 // Récupération du localstorage et des items
-const lsProducts = JSON.parse(localStorage.getItem('basket'))
+let lsProducts = JSON.parse(localStorage.getItem('basket'))
 const products = []
 // Récupérer toutes les données de l'API
 fetch(`http://localhost:3000/api/products/`)
