@@ -210,3 +210,6 @@ function display(product) {
  }
 
 */
+function test () {
+	
+}
