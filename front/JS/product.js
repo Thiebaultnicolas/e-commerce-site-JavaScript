@@ -92,7 +92,17 @@ console.log(addproduct);
 console.log(JSON.parse(localStorage.getItem("basket")));
 
 // au click du bouton ajoute addproduct 
-addToCart.addEventListener("click", addproduct)
+addToCart.addEventListener("click", () => {
+    const colors = document.getElementById("colors")
+    const colorSelected = colors.options[colors.selectedIndex].value
+    if (colorSelected === "") return window.alert("veuillez selectionner une couleur")
+    const quantity = document.getElementById("quantity").value
+    if (quantity > 100 || quantity < 1) return window.alert("quantité entre 1 et 100")
+    addproduct();
+    window.alert("Votre produit à bien étais ajouté au panier");   
+})
+
+
 
 
 
