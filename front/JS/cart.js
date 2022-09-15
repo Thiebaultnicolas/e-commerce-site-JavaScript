@@ -28,6 +28,7 @@ fetch(`http://localhost:3000/api/products/`)
  * @param {object} product
  */
 function display(product) {
+
 	// Introduction des elements dans la section
 
 	const section = document.querySelector('#cart__items')
@@ -111,15 +112,7 @@ function display(product) {
 	buttonSupp.classList.add('deleteItem')
 	buttonSupp.innerHTML = 'Supprimer'
 	divButtonSupp.appendChild(buttonSupp)
-	/*
-    // quantité total + prix total
 
-	const totalQuantity = document.querySelector("#totalQuantity")
-	totalQuantity.innerHTML = product.quantity += product.quantity
-
-	const totalPrice = document.querySelector("#totalPrice")
-	totalPrice.innerHTML = product.price * product.quantity
-*/
 
 	// modification quantitée
 
@@ -215,11 +208,105 @@ function prixTotal() {
 		.format(result)
 		.slice(0, -2)
 }
-/*
- let prixTotalCalcul = [];
 
- for (let m = 0; m <lsProducts.length; m++ ) {
-	console.log(lsProducts[m].price);
- }
 
-*/
+////////////////////////////////////////////// FORMULAIRE /////////////////////////////////////////
+
+
+/* formulaire commande  */
+let formulaireDeCommande = () => {
+    document.querySelector("#order").addEventListener("click", e => {
+        e.preventDefault()
+
+        /* Récupération formulaire */
+        let form = e.target.closest('form').elements
+
+        /* regex List */
+        let regEmail = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
+        let regName = /^[a-zA-ZZÀ-ÿ' -]+$/i;
+        let regAddress = /^[A-Za-z0-9\é\è\ê\ë\ä\à\ï\ç\ \,\'\-]+$/;
+        let regCity = /^[a-zA-ZÀ-ÿ' -]+$/;
+
+        /* validation flag */
+        let validate = true;
+
+        /* Champ Name */
+        if (!regName.test(form['firstName'].value)) {
+            form['firstName'].nextElementSibling.textContent = `Le prenom est invalide, il doit ne contenir que des lettres !`
+            validate = false
+        }
+        /* Champ Last name */
+        if (!regName.test(form['lastName'].value)) {
+            form['lastName'].nextElementSibling.textContent = `Le nom est invalide, il doit ne contenir que des lettre !`
+            validate = false
+        }
+        /* Champ Address */
+        if (!regAddress.test(form['address'].value)) {
+            form['address'].nextElementSibling.textContent = `Adresse Invalide, merci de vérifier si elle contient un numéro ainsi qu'un lieu !`
+            validate = false
+        }
+        /* Champ City */
+        if (!regCity.test(form['city'].value)) {
+            form['city'].nextElementSibling.textContent = `Ville Invalide, merci de renseigner une ville existante !`
+            validate = false
+        }
+        /* Champ Email */
+        if (!regEmail.test(form['email'].value)) {
+            form['email'].nextElementSibling.textContent = `Email non valide !`
+            validate = false
+        }
+
+        /* form Error */
+
+        if (!validate) {
+            return false;
+        }
+
+        /* Envoie de commande */
+        let orderFinal;
+        let productId = [];
+
+        if (regName && regAddress && regCity && regEmail) {
+
+            for (const product of kanapPannier) {
+                productId.push(product._id)
+            }
+
+            orderFinal = {
+                contact: {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    address: address.value,
+                    city: city.value,
+                    email: email.value,
+                },
+                products: productId
+            };
+
+            fetch("http://localhost:3000/api/products/order", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderFinal)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.removeItem('produitDuPannier');
+                    window.location.href = "confirmation.html?orderId=" + data.orderId;
+                })
+                .catch(err => console.log(err))
+            
+            
+        }
+        else {
+            document.querySelector("#order").value = "Veuillez remplir tout les champs"
+        };
+    });
+
+};
+
+window.addEventListener('load', () => {
+    formulaireDeCommande();
+})
