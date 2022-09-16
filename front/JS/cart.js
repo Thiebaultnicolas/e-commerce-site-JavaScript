@@ -6,20 +6,23 @@ fetch(`http://localhost:3000/api/products/`)
 	.then(res => res.json())
 	.then(apiProducts => {
 		//Fusion des données entre le localStorge et l'api
-		lsProducts.forEach(lsProduct => {
-			const productFound = apiProducts.find(
-				apiProduct => apiProduct._id === lsProduct.id
-			)
-			if (productFound) {
-				products.push({
-					...productFound,
-					...lsProduct,
-				})
-				display(products.at(-1))
-			}
-		})
+		if (lsProducts !== null) {
 
-		prixTotal()
+			lsProducts.forEach(lsProduct => {
+				const productFound = apiProducts.find(
+					apiProduct => apiProduct._id === lsProduct.id
+				)
+				if (productFound) {
+					products.push({
+						...productFound,
+						...lsProduct,
+					})
+					display(products.at(-1))
+				}
+			})
+	
+			prixTotal()
+		}
 	})
 	.catch(error => console.error(error))
 
@@ -218,7 +221,7 @@ let formulaireDeCommande = () => {
     document.querySelector("#order").addEventListener("click", e => {
         e.preventDefault()
 
-        /* Récupération formulaire */
+        /* Récupération des elements dans le formulaire */
         let form = e.target.closest('form').elements
 
         /* regex List */
@@ -237,7 +240,7 @@ let formulaireDeCommande = () => {
         }
         /* Champ Last name */
         if (!regName.test(form['lastName'].value)) {
-            form['lastName'].nextElementSibling.textContent = `Le nom est invalide, il doit ne contenir que des lettre !`
+            form['lastName'].nextElementSibling.textContent = `Le nom est invalide, il doit ne contenir que des lettres !`
             validate = false
         }
         /* Champ Address */
@@ -266,10 +269,9 @@ let formulaireDeCommande = () => {
         let orderFinal;
         let productId = [];
 
-        if (regName && regAddress && regCity && regEmail) {
 
             for (const product of lsProducts) {
-                productId.push(product._id)
+                productId.push(product.id)
             }
 
             orderFinal = {
@@ -282,6 +284,8 @@ let formulaireDeCommande = () => {
                 },
                 products: productId
             };
+            
+			// 
 
             fetch("http://localhost:3000/api/products/order", {
                 method: "POST",
@@ -293,17 +297,13 @@ let formulaireDeCommande = () => {
             })
                 .then(response => response.json())
                 .then(data => {
+					console.log(data);
                     localStorage.removeItem('basket');
                     window.location.href = "confirmation.html?orderId=" + data.orderId;
                 })
                 .catch(err => console.log(err))
             
-            
-        }
-        else {
-            document.querySelector("#order").value = "Veuillez remplir tout les champs"
-        };
-    });
+    }); 
 
 };
 
