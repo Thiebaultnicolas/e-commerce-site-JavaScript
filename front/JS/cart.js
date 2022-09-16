@@ -23,11 +23,11 @@ fetch(`http://localhost:3000/api/products/`)
 	})
 	.catch(error => console.error(error))
 
-/**
- * @description : Affiche Les canapé dans le dom
- * @param {object} product
- */
-function display(product) {
+	/**
+	 * @description : Affiche Les canapé dans le dom
+	 * @param {object} product
+	 */
+	function display(product) {
 
 	// Introduction des elements dans la section
 
@@ -192,22 +192,22 @@ function display(product) {
 	}
 }
 
-// Afficher prix total du panier
+	// Afficher prix total du panier
 
-function prixTotal() {
-	let result = 0
-	console.log(products)
-	for (const product of products) {
-		result += parseInt(product.price) * parseInt(product.quantity)
+	function prixTotal() {
+		let result = 0
+		console.log(products)
+		for (const product of products) {
+			result += parseInt(product.price) * parseInt(product.quantity)
+		}
+		const shownPrice = document.querySelector('#totalPrice')
+		shownPrice.textContent = new Intl.NumberFormat('fr-FR', {
+			style: 'currency',
+			currency: 'EUR',
+		})
+			.format(result)
+			.slice(0, -2)
 	}
-	const shownPrice = document.querySelector('#totalPrice')
-	shownPrice.textContent = new Intl.NumberFormat('fr-FR', {
-		style: 'currency',
-		currency: 'EUR',
-	})
-		.format(result)
-		.slice(0, -2)
-}
 
 
 ////////////////////////////////////////////// FORMULAIRE /////////////////////////////////////////
@@ -268,7 +268,7 @@ let formulaireDeCommande = () => {
 
         if (regName && regAddress && regCity && regEmail) {
 
-            for (const product of kanapPannier) {
+            for (const product of lsProducts) {
                 productId.push(product._id)
             }
 
@@ -293,7 +293,7 @@ let formulaireDeCommande = () => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    localStorage.removeItem('produitDuPannier');
+                    localStorage.removeItem('basket');
                     window.location.href = "confirmation.html?orderId=" + data.orderId;
                 })
                 .catch(err => console.log(err))
