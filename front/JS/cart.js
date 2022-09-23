@@ -145,7 +145,7 @@ fetch(`http://localhost:3000/api/products/`)
 					products[i].quantity = parseInt(product.quantity)
 
 					localStorage.setItem('basket', JSON.stringify(lsProducts))
-					//quantityTotalbasket()
+					quantityTotalbasket()
 					prixTotal()
 				}
 			}
@@ -189,7 +189,7 @@ fetch(`http://localhost:3000/api/products/`)
 	function quantityTotalbasket() {
 		let result = 0
 		for (const product of lsProducts) {
-			result += +product.quantity
+			result += parseInt(product.quantity);
 		}
 		const totalQuantity = document.querySelector('#totalQuantity')
 		totalQuantity.textContent = result
