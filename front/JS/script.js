@@ -7,13 +7,13 @@ fetch ("http://localhost:3000/api/products")
 function displayProducts(produits) {
 
    const sectionItems = document.querySelector(".items");
-console.log(sectionItems);
+
 
    produits.forEach((produit) => {
 
       const {_id, imageUrl, altTxt, name, description } = produit ;
 
-      console.log(_id, imageUrl, altTxt, name, description);
+      
 
       const a = document.createElement("a")
       a.href=`./product.html?id=${_id}`

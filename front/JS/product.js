@@ -18,13 +18,13 @@ function displayProducts(produits) {
     console.log(sectionItem__img);
 
     const {_id, imageUrl, altTxt, name, description, colors ,price } = produits ;
-    console.log(_id, imageUrl, altTxt, name, description,colors,price);
-    console.log(produits);
+   
+    
 
     const image = document.createElement("img")
     image.src=`${imageUrl}`
     image.alt=`${altTxt}`
-    console.log(image);
+   
 
     const nom = document.querySelector("#title");
     nom.innerText=`${name}`
@@ -88,8 +88,7 @@ function addproduct () {
     localStorage.setItem("basket", JSON.stringify(basket))
     
 }
-console.log(addproduct);
-console.log(JSON.parse(localStorage.getItem("basket")));
+
 
 // au click du bouton ajoute addproduct 
 addToCart.addEventListener("click", () => {
