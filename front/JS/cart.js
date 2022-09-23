@@ -158,16 +158,17 @@ fetch(`http://localhost:3000/api/products/`)
 
 	bouttonSupp.forEach(btn => {
 		btn.addEventListener('click', p => {
-			const test = p.target.closest('article')
+			const test = p.target.closest('article');
 			lsProducts = lsProducts.filter(
-				p => p.id !== test.dataset.id && p.color !== test.dataset.color
+				p => p.id !== test.dataset.id || p.color !== test.dataset.color
 			)
+			console.log(lsProducts);
 			products = products.filter(
-				p => p.id !== test.dataset.id && p.color !== test.dataset.color
+				p => p.id !== test.dataset.id || p.color !== test.dataset.color
 			)
 			refreshBasket(lsProducts)
 			test.remove()
-			//quantityTotalbasket()
+			quantityTotalbasket()
 			prixTotal()
 		})
 	})
@@ -193,13 +194,13 @@ fetch(`http://localhost:3000/api/products/`)
 		const totalQuantity = document.querySelector('#totalQuantity')
 		totalQuantity.textContent = result
 	}
+	       
 }
 
 	// Afficher prix total du panier
 
 	function prixTotal() {
 		let result = 0
-		console.log(products)
 		for (const product of products) {
 			result += parseInt(product.price) * parseInt(product.quantity)
 		}
