@@ -6,7 +6,7 @@
 
 ## Technologies Utilisées :
 
-```Interdit: L'utilisation de tout framework ou librairie JavaScript (React, Angular, Vue ou jQuery, par exemple)```
+🚫```Interdit: L'utilisation de tout framework ou librairie JavaScript (React, Angular, Vue ou jQuery, par exemple)```🚫
 - HTML
 
 - CSS
