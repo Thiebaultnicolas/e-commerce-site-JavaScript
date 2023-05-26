@@ -37,3 +37,44 @@
 - Créer un plan de test pour une application
 - Interagir avec un web service avec Javascript
 - Respecter les spécifications fonctionnelles et techniques
+
+---
+
+## EN Description :
+
+```The objective is to build an e-commerce site in JavaScript with dynamic interfaces.```
+
+## Technologies Used :
+
+🚫```Forbidden: The use of any JavaScript framework or library (React, Angular, Vue, or jQuery, for example)```🚫
+
+- HTML
+
+- CSS
+
+- JavaScript
+
+## Installation :
+
+1. Node.js:
+
+- Ensure that Node.js is installed on your machine.
+
+2. Clone the Repository :
+
+- `git clone https://github.com/Thiebaultnicolas/e-commerce-site-JavaScript.git `
+
+3. Install All Dependencies :
+
+- `npm install` or `yarn`
+
+4. Open the back directory to start the server :
+- `node server`
+
+
+## Skills Evaluated : 
+- Handle Javascript events
+- Validate data from external sources
+- Create a test plan for an application
+- Interact with a web service with JavaScript
+- Respect functional and technical specifications
